@@ -8,20 +8,21 @@ on:
 
 jobs:
   test:
+
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Test with Maven
-        run: mvn clean test site
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: ctions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Test with Maven
+      run: |
+        cd Aula-GitHub-Actions
+        mvn clean test site
 
   build:
     runs-on: ubuntu-latest
@@ -46,12 +47,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Run Shell Script for Notification
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Notification 
+  
         run: |
           chmod +x scripts/shell.sh
           export EMAIL_NOTIFICATION=$EMAIL_NOTIFICATION
           ./scripts/shell.sh
         env:
           EMAIL_NOTIFICATION: ${{ secrets.EMAIL_NOTIFICATION }}
-
